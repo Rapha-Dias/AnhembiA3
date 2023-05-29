@@ -16,31 +16,25 @@ public class Client {
     }
 
     private void initGame() {
-        System.out.println("====================== PAR OU IMPAR ======================");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("\nAntes de começar, por favor, diga-nos seu nome de usuário: ");
         try {
-            usuario = reader.readLine();
-        } catch (IOException e) {
-            System.err.println("Erro ao ler entrada do usuário: " + e.getMessage());
-            System.exit(-1);
-        }
+            System.out.println("====================== PAR OU IMPAR ======================");
+            System.out.print("\nAntes de começar, por favor, diga-nos seu nome de usuário: ");
+            usuario = new BufferedReader(new InputStreamReader(System.in)).readLine();
 
-        System.out.printf("\n\t============== BEM VINDO(A) %s ==============\n", usuario.toUpperCase());
-        System.out.println("\n\t   Algumas informações que você precisa saber");
+            System.out.println("\n\t============== BEM VINDO(A)" + usuario.toUpperCase() + " ==============");
+            System.out.println("\n\t   Algumas informações que você precisa saber");
 
-        System.out.println("\n==============================================================");
-        System.out.println("\n\t  A3 ANHEMBI FOI DESENVOLVIDO POR: ");
-        System.out.println("\n\t  João Henrique de Souza Mó     RA 125111345893");
-        System.out.println("\t    Igor Cesar Sanches Silva      RA 125111368951");
-        System.out.println("\t    Murillo Cesar Bispo Ferreira  RA 125111370656");
-        System.out.println("\t    Nathasha Lohanne Kirdeikas    RA 125111374719");
-        System.out.println("\t    Raphael Ferreira Dias         RA 125111347434");
-        System.out.println("\t    Davi Oliveira dos Santos      RA 125111350411");
-        System.out.println("\n==============================================================");
-        System.out.println("\n\t     APERTE 'ENTER' PARA CONTINUAR ");
-        try {
-            reader.readLine();
+            System.out.println("\n==============================================================");
+            System.out.println("\n\t  A3 ANHEMBI FOI DESENVOLVIDO POR: ");
+            System.out.println("\n\t  João Henrique de Souza Mó     RA 125111345893");
+            System.out.println("\t    Igor Cesar Sanches Silva      RA 125111368951");
+            System.out.println("\t    Murillo Cesar Bispo Ferreira  RA 125111370656");
+            System.out.println("\t    Nathasha Lohanne Kirdeikas    RA 125111374719");
+            System.out.println("\t    Raphael Ferreira Dias         RA 125111347434");
+            System.out.println("\t    Davi Oliveira dos Santos      RA 125111350411");
+            System.out.println("\n==============================================================");
+            System.out.println("\n\t     APERTE 'ENTER' PARA CONTINUAR ");
+            new BufferedReader(new InputStreamReader(System.in)).readLine();
         } catch (IOException e) {
             System.err.println("Erro ao ler entrada do usuário: " + e.getMessage());
             System.exit(-1);
@@ -119,7 +113,6 @@ public class Client {
                     scoreLabel.setText(parts[1]);
                 } catch (IOException ex) {
                     System.err.println("Erro ao ler do servidor: " + ex.getMessage());
-                    System.exit(-1);
                 }
             });
 

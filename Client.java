@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
@@ -36,19 +37,18 @@ public class Client {
             System.out.println("\n\t     APERTE 'ENTER' PARA CONTINUAR ");
             new BufferedReader(new InputStreamReader(System.in)).readLine();
         } catch (IOException e) {
-            System.err.println("Erro ao ler entrada do usuário: " + e.getMessage());
-            System.exit(-1);
+            JOptionPane.showMessageDialog(null, "Erro ao ler entrada do usuário: " + e.getMessage());
         }
     }
 
     private void run() {
-        try (Socket socket = new Socket(HOST, PORT)) {
+        try {
+            Socket socket = new Socket(HOST, PORT);
             System.out.println("Conectado ao servidor");
             GameGUI game = new GameGUI(socket);
             game.setVisible(true);
         } catch (IOException e) {
-            System.err.println("Erro ao conectar ao servidor: " + e.getMessage());
-            System.exit(-1);
+            JOptionPane.showMessageDialog(null, "Erro ao conectar ao servidor: " + e.getMessage());
         }
     }
 
@@ -66,8 +66,7 @@ public class Client {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
             } catch (IOException e) {
-                System.err.println("Erro ao configurar fluxos de entrada/saída: " + e.getMessage());
-                System.exit(-1);
+                JOptionPane.showMessageDialog(null, "Erro ao configurar fluxos de entrada/saída: " + e.getMessage());
             }
 
             setTitle("Par ou Ímpar");
@@ -98,21 +97,24 @@ public class Client {
 
             add(centerPanel, BorderLayout.CENTER);
 
-            playButton.addActionListener(e -> {
-                String input = inputField.getText();
-                if (!input.matches("\\d+")) {
-                    JOptionPane.showMessageDialog(null, "Por favor, digite um número válido.");
-                    return;
-                }
-                String parity = (String) paritySelector.getSelectedItem();
-                out.println(parity + "," + input);
-                try {
-                    String response = in.readLine();
-                    String[] parts = response.split(",");
-                    statusLabel.setText(parts[0]);
-                    scoreLabel.setText(parts[1]);
-                } catch (IOException ex) {
-                    System.err.println("Erro ao ler do servidor: " + ex.getMessage());
+            playButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String input = inputField.getText();
+                    if (!input.matches("\\d+")) {
+                        JOptionPane.showMessageDialog(null, "Por favor, digite um número válido.");
+                        return;
+                    }
+                    String parity = (String) paritySelector.getSelectedItem();
+                    out.println(parity + "," + input);
+                    try {
+                        String response = in.readLine();
+                        String[] parts = response.split(",");
+                        statusLabel.setText(parts[0]);
+                        scoreLabel.setText(parts[1]);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao ler do servidor: " + ex.getMessage());
+                    }
                 }
             });
 

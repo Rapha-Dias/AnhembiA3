@@ -9,7 +9,8 @@ public class Server {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server is listening on port " + PORT);
             while (true) {
-                try (Socket socket = serverSocket.accept()) {
+                Socket socket = serverSocket.accept();
+                try {
                     System.out.println("New client connected");
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -19,7 +20,7 @@ public class Server {
 
                     while (true) {
                         String input = in.readLine();
-                        if ("QUIT".equals(input)) {
+                        if (input == null || input.isEmpty()) {
                             break;
                         }
                         String[] parts = input.split(",");
@@ -40,11 +41,17 @@ public class Server {
                         out.println(result + ",Placar: " + scorePlayer + " - " + scoreComputer);
                     }
                 } catch (IOException e) {
-                    System.err.println("Error in server: " + e.getMessage());
+                    System.out.println("Error in client: " + e.getMessage());
+                } finally {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        System.out.println("Error when closing the socket: " + e.getMessage());
+                    }
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error in server: " + e.getMessage());
+            System.out.println("Error in server: " + e.getMessage());
         }
     }
 }

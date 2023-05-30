@@ -26,7 +26,7 @@ public class Server {
                         String[] parts = input.split(",");
                         String parity = parts[0];
                         int playerNumber = Integer.parseInt(parts[1]);
-                        int computerNumber = rand.nextInt(6); 
+                        int computerNumber = rand.nextInt(6);  // Computador escolhe um número entre 0 e 5
                         int total = playerNumber + computerNumber;
                         boolean isTotalEven = total % 2 == 0;
                         boolean playerWins = (parity.equals("Par") && isTotalEven) || (parity.equals("Ímpar") && !isTotalEven);
@@ -37,8 +37,9 @@ public class Server {
                             scoreComputer++;
                         }
 
+                        // Comunicar resultado, número do computador e pontuação para o cliente
                         String result = playerWins ? "Você ganhou!" : "Você perdeu!";
-                        out.println(result + ",Placar: " + scorePlayer + " - " + scoreComputer);
+                        out.println(result + ",Número do computador: " + computerNumber + ",Placar: " + scorePlayer + " - " + scoreComputer);
                     }
                 } catch (IOException e) {
                     System.out.println("Error in client: " + e.getMessage());

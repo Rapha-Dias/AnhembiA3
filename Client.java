@@ -71,7 +71,7 @@ public class Client {
 
             setTitle("Par ou Ímpar");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(350, 200);
+            setSize(500, 400);  // Tamanho ajustado
             setLayout(new BorderLayout(10, 10));
 
             JPanel topPanel = new JPanel();
@@ -82,20 +82,27 @@ public class Client {
             topPanel.add(new JLabel("Digite um número:"));
             inputField = new JTextField(10);
             topPanel.add(inputField);
-            playButton = new JButton("Jogar");
-            topPanel.add(playButton);
             add(topPanel, BorderLayout.NORTH);
+
+            JPanel buttonPanel = new JPanel(new FlowLayout());  // Painel para os botões
+            playButton = new JButton("Jogar");
+            buttonPanel.add(playButton);
+            JButton exitButton = new JButton("Sair");
+            buttonPanel.add(exitButton);
+            add(buttonPanel, BorderLayout.CENTER);
 
             JPanel centerPanel = new JPanel(new BorderLayout());
             statusLabel = new JLabel("", SwingConstants.CENTER);
+            statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
             centerPanel.add(statusLabel, BorderLayout.CENTER);
 
             JPanel scorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             scoreLabel = new JLabel("Placar: 0 - 0");
+            scoreLabel.setFont(new Font("Arial", Font.PLAIN, 14));
             scorePanel.add(scoreLabel);
             centerPanel.add(scorePanel, BorderLayout.SOUTH);
 
-            add(centerPanel, BorderLayout.CENTER);
+            add(centerPanel, BorderLayout.SOUTH);
 
             playButton.addActionListener(new ActionListener() {
                 @Override
@@ -110,15 +117,27 @@ public class Client {
                     try {
                         String response = in.readLine();
                         String[] parts = response.split(",");
-                        statusLabel.setText(parts[0]);
-                        scoreLabel.setText(parts[1]);
+                        statusLabel.setText(parts[0] + " " + parts[1]);
+                        scoreLabel.setText(parts[2]);
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(null, "Erro ao ler do servidor: " + ex.getMessage());
                     }
                 }
             });
 
-            getRootPane().setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            exitButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        socket.close();
+                        System.exit(0);
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "Erro ao fechar o socket: " + ex.getMessage());
+                    }
+                }
+            });
+
+            getRootPane().setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         }
     }
 }

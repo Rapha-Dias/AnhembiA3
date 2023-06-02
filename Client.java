@@ -6,14 +6,24 @@ import java.net.*;
 
 public class Client {
     private static final String HOST = "localhost";
-    private static final int PORT = 8080;
 
     private String usuario;
 
     public static void main(String[] args) {
-        Client client = new Client();
-        client.initGame();
-        client.run();
+        if (args.length > 0) {
+            int port = Integer.parseInt(args[0]);
+            Client client = new Client(port);
+            client.initGame();
+            client.run();
+        } else {
+            System.out.println("Informe o número da porta como parâmetro ao iniciar o cliente.");
+        }
+    }
+
+    private int port;
+
+    public Client(int port) {
+        this.port = port;
     }
 
     private void initGame() {
@@ -43,7 +53,7 @@ public class Client {
 
     private void run() {
         try {
-            Socket socket = new Socket(HOST, PORT);
+            Socket socket = new Socket(HOST, port);
             System.out.println("Conectado ao servidor");
             GameGUI game = new GameGUI(socket);
             game.setVisible(true);
@@ -69,15 +79,15 @@ public class Client {
                 JOptionPane.showMessageDialog(null, "Erro ao configurar fluxos de entrada/saída: " + e.getMessage());
             }
 
-            setTitle("Par ou Ímpar");
+            setTitle("Par ou Impar");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setSize(500, 400);  // Tamanho ajustado
             setLayout(new BorderLayout(10, 10));
 
             JPanel topPanel = new JPanel();
             topPanel.setLayout(new FlowLayout());
-            topPanel.add(new JLabel("Selecione Par ou Ímpar:"));
-            paritySelector = new JComboBox<>(new String[] { "Par", "Ímpar" });
+            topPanel.add(new JLabel("Selecione Par ou Impar:"));
+            paritySelector = new JComboBox<>(new String[] { "Par", "Impar" });
             topPanel.add(paritySelector);
             topPanel.add(new JLabel("Digite um número:"));
             inputField = new JTextField(10);
